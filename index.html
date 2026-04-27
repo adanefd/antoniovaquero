@@ -24,15 +24,38 @@
             margin: 0;
             overflow-x: hidden;
         }
-
-        /* Opcional: Si quieres que las tarjetas de información resalten más, 
-        asegúrate de que sigan siendo blancas puras */
-        .card-info, .itinerario-container {
-            background-color: #ffffff !important;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03); /* Sombra más suave */
+        /* --- FONDO FIJO PARA TODA LA INVITACIÓN --- */
+        body {
+            /* Sustituye 'fondo-mateo.jpg' por tu archivo */
+            background-image: linear-gradient(rgba(244, 241, 234, 0), rgba(244, 241, 234, 0)), url('fondo.jpg');
+            background-attachment: fixed; /* Esto hace que la imagen no se mueva al desplazar */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
         }
 
+        /* Hacemos que las secciones sean transparentes para ver el fondo */
+        .section {
+            background: transparent !important;
+        }
+
+        /* Mantenemos las tarjetas con fondo sólido para que el texto sea legible */
+        .card-info, .itinerario-container {
+            background-color: rgba(255, 255, 255, 0.2) !important; /* Blanco con ligera transparencia */
+            backdrop-filter: blur(5px); /* Efecto de cristal esmerilado opcional */
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* La misma imagen que pusiste arriba */
+            background: linear-gradient(rgba(244, 241, 234, 0.8), rgba(244, 241, 234, 0.8)), url('fondo-mateo.jpg') center/cover no-repeat;
+            z-index: -1; /* Se queda al fondo de todo */
+        }
         /* --- HERO REESTRUCTURADO --- */
         .hero { 
             position: relative;
@@ -275,6 +298,7 @@
         .carousel-indicators [button] {
             background-color: var(--dorado-sutil) !important;
         }
+
 
         /* --- RESTO DE ESTILOS (IGUALES) --- */
         #flipdown-container { margin-top: 20px; display: flex; justify-content: center; align-items: center; width: 100%; }
