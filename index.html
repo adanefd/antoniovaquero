@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cumpleaños vaquero de Toñin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/flipdown@0.3.2/dist/flipdown.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+        --dorado: #c5a059;
+        /* CAMBIA ESTA VARIABLE: */
+        --fondo-personalizado: #f4f1ea; 
+        --texto: #4a4a4a;
+    }
+
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            /* Aplicamos el nuevo color aquí: */
+            background-color: var(--fondo-personalizado); 
+            color: var(--texto);
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Opcional: Si quieres que las tarjetas de información resalten más, 
+        asegúrate de que sigan siendo blancas puras */
+        .card-info, .itinerario-container {
+            background-color: #ffffff !important;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03); /* Sombra más suave */
+        }
+
+        /* --- HERO REESTRUCTURADO --- */
+        .hero { 
+            position: relative;
+            min-height: 100vh;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            text-align: center;
+            overflow: hidden; /* Importante para que la foto no se salga en el zoom */
+        }
+
+        /* Contenedor específico para la foto de fondo animada */
+        .hero-bg-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Fondo */
+        }
+
+        .hero-bg-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Mantiene proporción de la foto */
+            object-position: center 20%; /* Ajusta el encuadre (20% para que se vea la cara) */
+            
+            /* Aplicamos la animación a la FOTO */
+            animation: photoZoomIn 3s ease-out both;
+            will-change: transform; /* Optimización para móvil */
+        }
+
+        /* Capa oscura (Overlay) para que se lea el texto */
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Degradado que va de negro arriba a tu nuevo color abajo */
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5) 70%, var(--fondo-personalizado) 100%);
+            z-index: 2;
+        }
+
+        /* Contenido (Texto/Contador) */
+        .hero .container {
+            position: relative;
+            z-index: 3; /* Sobre la capa oscura */
+            color: white;
+            padding: 20px;
+            
+            /* Aplicamos la animación al TEXTO, con un retraso */
+            animation: fadeInUp 1.5s ease-out 1s both; /* Empieza 1s después que la foto */
+        }
+
+        .title { 
+            font-family: 'Cinzel', serif; 
+            font-size: 3.5rem; 
+            color: #595bc5;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+        }
+
+        /* --- ANIMACIONES CSS --- */
+
+        /* 1. Animación de Zoom Suave para la FOTO */
+        @keyframes photoZoomIn {
+            from {
+                transform: scale(1.15); /* Empieza un poco más grande */
+                opacity: 0; /* Empieza invisible */
+            }
+            to {
+                transform: scale(1); /* Termina en su tamaño original */
+                opacity: 1; /* Termina visible */
+            }
+        }
+
+        /* 2. Animación de Entrada para el TEXTO (Aparecer Arriba) */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate3d(0, 30px, 0); /* 30px abajo */
+            }
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0); /* En su lugar */
+            }
+        }
+        /* Estilo para los contenedores de los mapas */
+        .map-container {
+            width: 100%;
+            height: 200px; /* Altura ideal para celular */
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 15px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* --- NUEVO ESTILO DE ITINERARIO VISUAL --- */
+        .itinerario-container {
+            background-color: #ffffff; /* O puedes usar var(--dorado) si quieres el fondo rojo/dorado de la imagen */
+            padding: 40px 20px;
+            border-radius: 20px;
+        }
+
+        .itinerario-row {
+            display: flex;
+            align-items: center;
+            padding: 25px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .itinerario-row:last-child {
+            border-bottom: none;
+        }
+
+        .itinerario-icon {
+            flex: 0 0 80px; /* Tamaño del icono */
+            font-size: 3rem; /* Iconos grandes */
+            text-align: center;
+            margin-right: 20px;
+            color: var(--dorado);
+        }
+
+        .itinerario-info {
+            text-align: left;
+        }
+
+        .itinerario-time {
+            display: block;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .itinerario-event {
+            font-size: 1.2rem;
+            color: var(--texto);
+            margin: 0;
+        }
+
+        /* --- ESTILOS PARA IMÁGENES DE LUGARES CON ANIMACIÓN --- */
+
+        /* Contenedor de la imagen en la tarjeta */
+        .card-img-container {
+            width: 100%;
+            height: 180px; /* Altura ideal para móvil */
+            overflow: hidden;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        .card-place-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        /* --- CLASES DE ANIMACIÓN SUTIL (FadeIn) --- */
+
+        /* Estado inicial: invisible y un poco abajo */
+        .fade-in-on-scroll {
+            opacity: 0;
+            transform: translate3d(0, 30px, 0);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform; /* Optimización */
+        }
+
+        /* Estado final: visible y en su lugar */
+        .fade-in-on-scroll.appear {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+
+        /* Botón de Música Flotante */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            background-color: var(--dorado-sutil);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: none;
+            transition: transform 0.3s ease;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+        }
+
+        /* Animación de pulso cuando la música suena */
+        .playing {
+            animation: pulse-gold 2s infinite;
+        }
+
+        @keyframes pulse-gold {
+            0% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(197, 160, 89, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0); }
+        }
+
+        /* --- ESTILOS DEL CARRUSEL --- */
+        .carousel-container {
+            padding: 40px 0;
+            max-width: 600px; /* Tamaño máximo para que no se deforme en PC */
+            margin: 0 auto;
+        }
+
+        .carousel-item {
+            height: 450px; /* Altura fija para todas las fotos en móvil */
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Esto hace que la foto llene el espacio sin estirarse */
+            object-position: center;
+        }
+
+        /* Bolitas de navegación doradas */
+        .carousel-indicators [button] {
+            background-color: var(--dorado-sutil) !important;
+        }
+
+        /* --- RESTO DE ESTILOS (IGUALES) --- */
+        #flipdown-container { margin-top: 20px; display: flex; justify-content: center; align-items: center; width: 100%; }
+        .flipdown { display: flex !important; flex-wrap: nowrap !important; justify-content: center; width: auto !important; transform: scale(0.7); transform-origin: center center; }
+        .section { padding: 50px 20px; text-align: center; }
+        .card-info { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 20px; border-top: 5px solid var(--dorado); }
+        .btn-confirmar { background-color: #25d366; color: white; border-radius: 50px; padding: 15px 40px; font-weight: 600; text-decoration: none; display: inline-block; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
+        .map-link { color: var(--dorado); text-decoration: none; font-weight: 600; display: block; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="hero-bg-container">
+            <img src="tonin.jpeg" alt="Toñin" class="hero-bg-image">
+        </div>
+
+        <div class="hero-overlay"></div>
+
+        <div class="container">
+            <p class="text-uppercase mb-2" style="letter-spacing: 3px; font-weight: 300;">Mi cumpleaños</p>
+            <h1 class="title">Toñin</h1>
+            <p class="fs-5">Acompáñame a celebrar mi cumpleaños</p>
+
+            <div id="flipdown-container">
+                <div id="flipdown" class="flipdown flipdown__theme-dark"></div>
+            </div>
+            
+            <p class="mt-4 fw-bold">Sábado 23 de mayo del 2026</p>
+        </div>
+    </section>
+
+    <section class="section container">
+    <h2 class="mb-5" style="font-family: 'Cinzel', serif; color: var(--dorado-sutil);">Galería</h2>
+    
+    <div class="carousel-container fade-in-on-scroll"> <div id="carouselMateo" class="carousel slide" data-bs-ride="carousel">
+            
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselMateo" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#carouselMateo" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#carouselMateo" data-bs-slide-to="2"></button>
+            </div>
+
+            <div class="carousel-inner shadow-lg">
+                <div class="carousel-item active">
+                    <img src="tonin1.jpeg" alt="Mateo 1">
+                </div>
+                <div class="carousel-item">
+                    <img src="tonin2.jpeg" alt="Mateo 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="tonin3.jpeg" alt="Mateo 3">
+                </div>
+                <div class="carousel-item">
+                    <img src="tonin4.jpeg" alt="Mateo 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="tonin5.jpeg" alt="Mateo 3">
+                </div>
+                <div class="carousel-item">
+                    <img src="tonin6.jpeg" alt="Mateo 2">
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselMateo" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselMateo" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+    </div>
+</section>
+
+    <section class="section container text-center">
+        <h2 class="mb-5" style="font-family: 'Cinzel', serif; color: var(--dorado);">Dónde y Cuándo</h2>
+
+            <div class="col-md-6 mb-4 fade-in-on-scroll">
+                <div class="card-info h-100">
+                    <h3 class="mb-4" style="font-family: 'Cinzel', serif;">Recepción</h3>
+                    
+                    <div class="card-img-container">
+                        <img src="granja.jpg" alt="Jardín de Eventos" class="card-place-img">
+                    </div>
+
+                    <p>20:00 hrs<br>Terraza con alberca "La Granja"<br>León, Gto.</p>
+                    <a href="https://maps.app.goo.gl/hFq57VCeWqgjceGAA" class="btn-custom">Cómo llegar</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section container">
+        <h2 class="mb-5" style="font-family: 'Cinzel', serif; color: var(--dorado);">Itinerario</h2>
+        
+        <div class="itinerario-container shadow-sm">
+
+            <div class="itinerario-row">
+                <div class="itinerario-icon">🥂</div>
+                <div class="itinerario-info">
+                    <span class="itinerario-time">02:30 PM</span>
+                    <p class="itinerario-event">Recepción y Bienvenida</p>
+                </div>
+            </div>
+
+            <div class="itinerario-row">
+                <div class="itinerario-icon">🍽️</div>
+                <div class="itinerario-info">
+                    <span class="itinerario-time">03:30 PM</span>
+                    <p class="itinerario-event">Comida Familiar</p>
+                </div>
+            </div>
+
+            <div class="itinerario-row">
+                <div class="itinerario-icon">🎂</div>
+                <div class="itinerario-info">
+                    <span class="itinerario-time">05:00 PM</span>
+                    <p class="itinerario-event">Pastel y Celebración</p>
+                </div>
+            </div>
+
+            <div class="itinerario-row">
+                <div class="itinerario-icon">🕺</div>
+                <div class="itinerario-info">
+                    <span class="itinerario-time">06:00 PM</span>
+                    <p class="itinerario-event">Convivencia y Música</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section text-center bg-white">
+        <div class="container">
+            <h2 class="mb-4">¿Nos acompañas?</h2>
+            <p class="mb-5">Para nosotros es muy importante contar con tu presencia. Por favor corfirmanos antes del 23 de mayo.</p>
+            <a href="https://wa.me/521234567890?text=Hola!%20Confirmo%20mi%20asistencia%20para%20la%20confirmacion%20de%20Toñin" class="btn btn-confirmar">
+                Confirmar por WhatsApp
+            </a>
+        </div>
+    </section>
+
+    <footer class="text-center py-5">
+        <p style="font-size: 0.8rem; color: #aaa;">Con cariño, Toñin y sus familia</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/flipdown@0.3.2/dist/flipdown.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fecha: 23 de Mayo de 2026 a las 4:00 pm
+            // Mes es 4 porque Mayo es 4
+            const eventDate = new Date(2026, 4, 23, 16, 0, 0).getTime() / 1000;
+
+            const flipdown = new FlipDown(eventDate)
+                .start()
+                .ifEnded(() => {
+                    document.getElementById('flipdown-container').innerHTML = "<h4>¡Es hoy!</h4>";
+                });
+        });
+    </script>
+        <script>
+        // --- LÓGICA PARA ANIMACIÓN AL HACER SCROLL ---
+        document.addEventListener("DOMContentLoaded", function() {
+            const elementsToAnimate = document.querySelectorAll(".fade-in-on-scroll");
+
+            // Configuración del Observador
+            const observerOptions = {
+                root: null, // Usa la ventana (viewport)
+                rootMargin: "0px",
+                threshold: 0.2 // Se dispara cuando el 20% del elemento es visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Si el elemento entra en la vista, añade la clase 'appear'
+                        entry.target.classList.add("appear");
+                        // Opcional: deja de observar después de aparecer
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Activamos el observador para cada elemento
+            elementsToAnimate.forEach(element => {
+                observer.observe(element);
+            });
+        });
+
+        const music = document.getElementById('bgMusic');
+        const btn = document.getElementById('musicBtn');
+        const icon = document.getElementById('musicIcon');
+
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                btn.classList.add('playing');
+                icon.innerText = '⏸️'; // Icono de pausa
+            } else {
+                music.pause();
+                btn.classList.remove('playing');
+                icon.innerText = '🎵'; // Icono de nota musical
+            }
+        }
+        function toggleMusic() {
+            const music = document.getElementById('bgMusic');
+            const btn = document.getElementById('musicBtn');
+            const icon = document.getElementById('musicIcon');
+
+            if (music.paused) {
+                // Intentamos reproducir y atrapamos posibles errores
+                music.play().then(() => {
+                    btn.classList.add('playing');
+                    icon.innerText = '⏸️';
+                }).catch(error => {
+                    console.error("Error al reproducir:", error);
+                    alert("No se pudo cargar la música. Revisa que el archivo 'musica.mp3' esté en GitHub.");
+                });
+            } else {
+                music.pause();
+                btn.classList.remove('playing');
+                icon.innerText = '🎵';
+            }
+        }
+    </script>
+    <audio id="bgMusic" loop>
+    <source src="song.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <button class="music-control" id="musicBtn" onclick="toggleMusic()">
+        <span id="musicIcon">🎵</span>
+    </button>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
