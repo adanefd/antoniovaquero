@@ -18,7 +18,7 @@
     }
 
         body { 
-            font-family: 'Montserrat', sans-serif; 
+            font-family: 'Playfair Display', sans-serif; 
             /* Aplicamos el nuevo color aquí: */
             background-color: var(--fondo-personalizado); 
             color: var(--texto);
@@ -129,7 +129,7 @@
         }
 
         .title { 
-            font-family: 'Cinzel', serif; 
+            font-family: 'Playfair Display', serif; 
             font-size: 3.5rem; 
             color: #595bc5;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -240,6 +240,12 @@
             object-position: center;
         }
 
+        .card-info {
+            border: 3px solid #8B4513; /* Un café cuero profundo */
+            border-radius: 5px; /* Menos redondeado, más cuadrado como un marco */
+            background-image: url('textura-cuero-muy-suave.jpg');
+        }
+
         /* --- CLASES DE ANIMACIÓN SUTIL (FadeIn) --- */
 
         /* Estado inicial: invisible y un poco abajo */
@@ -278,6 +284,45 @@
 
         .music-control:hover {
             transform: scale(1.1);
+        }
+
+        /* Contenedor del botón para posicionar la leyenda */
+        .music-wrapper {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            z-index: 999;
+        }
+
+        /* La leyenda "Reproduceme" */
+        .music-legend {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: var(--dorado-sutil);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-right: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border: 1px solid var(--dorado-sutil);
+            white-space: nowrap;
+            /* Animación sutil de levitación */
+            animation: float-text 3s ease-in-out infinite;
+        }
+
+        @keyframes float-text {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-5px); }
+        }
+
+        /* Ajuste al botón para que ya no sea 'fixed' directamente (el wrapper lo es) */
+        .music-control {
+            position: relative;
+            bottom: 0;
+            right: 0;
+            /* ... resto de tus estilos actuales de .music-control se quedan igual ... */
         }
 
         /* Animación de pulso cuando la música suena */
@@ -319,6 +364,52 @@
             background-color: var(--dorado-sutil) !important;
         }
 
+        /* --- ESTILOS PARA EL CUADRO DE VESTIMENTA --- */
+        .dress-code-container {
+            background-color: rgba(255, 255, 255, 0.6);
+            border: 2px dashed var(--dorado-sutil); /* Borde punteado elegante */
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .dress-code-title {
+            font-family: 'Cinzel', serif;
+            color: #5d4037; /* Un tono café cuero */
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .dress-code-gallery {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap; /* Para que se acomode en móvil */
+        }
+
+        .dress-code-item {
+            flex: 1;
+            min-width: 100px;
+            max-width: 150px;
+            text-align: center;
+        }
+
+        .dress-code-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            border: 3px solid white;
+        }
+
+        .dress-code-text {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--texto);
+        }
+
 
         /* --- RESTO DE ESTILOS (IGUALES) --- */
         #flipdown-container { margin-top: 20px; display: flex; justify-content: center; align-items: center; width: 100%; }
@@ -350,9 +441,35 @@
             <p class="mt-4 fw-bold">Sábado 23 de mayo del 2026</p>
         </div>
     </section>
+    
+    <div class="text-center my-4">
+        <img src="lazo.png" style="width: 300px; opacity: 0.6;">
+    </div>
+
+    <section class="section container text-center">
+        <h2 class="mb-5" style="font-family: 'Playfair Display', serif; color: var(--dorado);">Dónde y Cuándo</h2>
+
+            <div class="col-md-6 mb-4 fade-in-on-scroll">
+                <div class="card-info h-100">
+                    <h3 class="mb-4" style="font-family: 'Playfair Display', serif;">Recepción</h3>
+                    
+                    <div class="card-img-container">
+                        <img src="granja.jpg" alt="Jardín de Eventos" class="card-place-img">
+                    </div>
+
+                    <p>04:00 p.m.<br>La Granja<br>Terraza con alberca<br> Tonalá, JAL.</p>
+                    <a href="https://maps.app.goo.gl/hFq57VCeWqgjceGAA" class="btn-custom">Cómo llegar</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="text-center my-4">
+        <img src="lazo.png" style="width: 300px; opacity: 0.6;">
+    </div>
 
     <section class="section container">
-        <h2 class="mb-5" style="font-family: 'Cinzel', serif; color: var(--dorado-sutil);">Galería</h2>
+        <h2 class="mb-5" style="font-family: 'Playfair Display', serif; color: var(--dorado-sutil);">Galería</h2>
         
         <div class="carousel-container fade-in-on-scroll">
             <div id="carouselMateo" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
@@ -397,31 +514,17 @@
         </div>
     </section>
 
-    <section class="section container text-center">
-        <h2 class="mb-5" style="font-family: 'Cinzel', serif; color: var(--dorado);">Dónde y Cuándo</h2>
-
-            <div class="col-md-6 mb-4 fade-in-on-scroll">
-                <div class="card-info h-100">
-                    <h3 class="mb-4" style="font-family: 'Cinzel', serif;">Recepción</h3>
-                    
-                    <div class="card-img-container">
-                        <img src="granja.jpg" alt="Jardín de Eventos" class="card-place-img">
-                    </div>
-
-                    <p>04:00 hrs<br>Terraza con alberca "La Granja"<br>tonala, JAL.</p>
-                    <a href="https://maps.app.goo.gl/hFq57VCeWqgjceGAA" class="btn-custom">Cómo llegar</a>
-                </div>
-            </div>
-        </div>
-    </section>
+        <div class="text-center my-4">
+        <img src="lazo.png" style="width: 300px; opacity: 0.6;">
+    </div>
 
     <section class="section container">
-        <h2 class="mb-5" style="font-family: 'Cinzel', serif; color: var(--dorado);">Itinerario</h2>
+        <h2 class="mb-5" style="font-family: 'Playfair Display', serif; color: var(--dorado);">Itinerario</h2>
         
         <div class="itinerario-container shadow-sm">
 
             <div class="itinerario-row">
-                <div class="itinerario-icon">🥂</div>
+                <div class="itinerario-icon">🌵</div>
                 <div class="itinerario-info">
                     <span class="itinerario-time">04:00 PM</span>
                     <p class="itinerario-event">Recepción y Bienvenida</p>
@@ -429,7 +532,7 @@
             </div>
 
             <div class="itinerario-row">
-                <div class="itinerario-icon">🍽️</div>
+                <div class="itinerario-icon">🐄</div>
                 <div class="itinerario-info">
                     <span class="itinerario-time">05:00 PM</span>
                     <p class="itinerario-event">Comida Familiar</p>
@@ -445,7 +548,7 @@
             </div>
 
             <div class="itinerario-row">
-                <div class="itinerario-icon">🕺</div>
+                <div class="itinerario-icon">🏇🏼</div>
                 <div class="itinerario-info">
                     <span class="itinerario-time">08:00 PM</span>
                     <p class="itinerario-event">Convivencia y Música</p>
@@ -454,6 +557,31 @@
 
         </div>
     </section>
+
+    <div class="text-center my-4">
+        <img src="lazo.png" style="width: 300px; opacity: 0.6;">
+    </div>
+
+    <section class="section container fade-in-on-scroll">
+    <div class="dress-code-container text-center">
+        <h2 class="dress-code-title">¡No olvides tu atuendo vaquero!</h2>
+        <p class="mb-4">¡Queremos que todos luzcan su mejor outfit vaquero!</p>
+        
+        <div class="dress-code-gallery">
+            <div class="dress-code-item">
+                <img src="vaqueros.png" alt="Mezclilla" class="dress-code-img">
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <small style="font-style: italic; color: #8d6e63;">*Código de vestimenta: Vaquero*</small>
+        </div>
+    </div>
+</section>
+
+    <div class="text-center my-4">
+        <img src="lazo.png" style="width: 300px; opacity: 0.6;">
+    </div>
 
     <section class="section text-center bg-white">
         <div class="container">
@@ -465,8 +593,12 @@
         </div>
     </section>
 
+    <div class="text-center my-4">
+        <img src="lazo.png" style="width: 300px; opacity: 0.6;">
+    </div>
+
     <footer class="text-center py-5">
-        <p style="font-size: 0.8rem; color: #aaa;">Con cariño, Toñin y sus familia</p>
+        <p style="font-size: 1rem; color: #424242;">Con cariño, Toñin y su familia...</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/flipdown@0.3.2/dist/flipdown.min.js"></script>
@@ -512,39 +644,22 @@
             });
         });
 
-        const music = document.getElementById('bgMusic');
-        const btn = document.getElementById('musicBtn');
-        const icon = document.getElementById('musicIcon');
-
-        function toggleMusic() {
-            if (music.paused) {
-                music.play();
-                btn.classList.add('playing');
-                icon.innerText = '⏸️'; // Icono de pausa
-            } else {
-                music.pause();
-                btn.classList.remove('playing');
-                icon.innerText = '🎵'; // Icono de nota musical
-            }
-        }
         function toggleMusic() {
             const music = document.getElementById('bgMusic');
             const btn = document.getElementById('musicBtn');
             const icon = document.getElementById('musicIcon');
+            const legend = document.getElementById('musicLegend');
 
             if (music.paused) {
-                // Intentamos reproducir y atrapamos posibles errores
-                music.play().then(() => {
-                    btn.classList.add('playing');
-                    icon.innerText = '⏸️';
-                }).catch(error => {
-                    console.error("Error al reproducir:", error);
-                    alert("No se pudo cargar la música. Revisa que el archivo 'musica.mp3' esté en GitHub.");
-                });
+                music.play();
+                btn.classList.add('playing');
+                icon.innerText = '⏸️';
+                legend.style.display = 'none'; // Oculta el texto al sonar
             } else {
                 music.pause();
                 btn.classList.remove('playing');
                 icon.innerText = '🎵';
+                legend.style.display = 'block'; // Lo muestra si pausan
             }
         }
         document.addEventListener('DOMContentLoaded', function () {
@@ -556,14 +671,17 @@
             });
         });
     </script>
-    <audio id="bgMusic" loop>
-    <source src="song.mp3" type="audio/mpeg">
-        Tu navegador no soporta el elemento de audio.
-    </audio>
+        <div class="music-wrapper">
+        <span class="music-legend" id="musicLegend">Reproduceme</span>
+        
+        <button class="music-control" id="musicBtn" onclick="toggleMusic()">
+            <span id="musicIcon">🎵</span>
+        </button>
+    </div>
 
-    <button class="music-control" id="musicBtn" onclick="toggleMusic()">
-        <span id="musicIcon">🎵</span>
-    </button>
+    <audio id="bgMusic" loop>
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
