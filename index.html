@@ -27,7 +27,7 @@
         /* --- FONDO FIJO PARA TODA LA INVITACIÓN --- */
         body {
             /* Sustituye 'fondo-mateo.jpg' por tu archivo */
-            background-image: linear-gradient(rgba(244, 241, 234, 0.8), rgba(244, 241, 234, 0.8)), url('fondo.jpg');
+            background-image: linear-gradient(rgba(244, 241, 234, 0), rgba(244, 241, 234, 0)), url('fondo.jpg');
             background-attachment: fixed; /* Esto hace que la imagen no se mueva al desplazar */
             background-position: center;
             background-repeat: no-repeat;
@@ -45,16 +45,32 @@
             backdrop-filter: blur(5px); /* Efecto de cristal esmerilado opcional */
         }
 
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            /* La misma imagen que pusiste arriba */
-            background: linear-gradient(rgba(244, 241, 234, 0.9), rgba(244, 241, 234, 0.9)), url(fondo.jpg') center/cover no-repeat;
-            z-index: -1; /* Se queda al fondo de todo */
+        @media (max-width: 768px) {
+            body {
+                /* Desactivamos el fondo en el body para que no haga conflicto */
+                background-image: none !important;
+                background-color: #f4f1ea; /* Color base beige */
+            }
+
+            body::before {
+                content: "";
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%; /* Cubre solo la pantalla visible */
+                
+                /* Ajustamos la imagen */
+                background-image: linear-gradient(rgba(244, 241, 234, 0.85), rgba(244, 241, 234, 0.85)), url('fondo.jpg');
+                background-position: center center;
+                background-repeat: no-repeat;
+                background-size: cover; /* Ajusta la foto al ancho del cel sin deformar */
+                
+                z-index: -1;
+                /* Este comando es el truco maestro para iOS */
+                -webkit-transform: translate3d(0,0,0);
+                transform: translate3d(0,0,0);
+            }
         }
         /* --- HERO REESTRUCTURADO --- */
         .hero { 
